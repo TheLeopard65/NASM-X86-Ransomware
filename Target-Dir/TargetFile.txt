@@ -1,0 +1,1 @@
+This is a Dummy Target File for XOR Based Encryption and Decryption.
