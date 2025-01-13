@@ -1,1 +1,1 @@
-This is a Dummy Target File for XOR Based Encryption and Decryption.
+This is a Dummy File to Test the the NASM x86 Assembly Ransomware.
